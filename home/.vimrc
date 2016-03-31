@@ -13,15 +13,23 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify'
 Plugin 'sjl/gundo.vim'
-Plugin 'mileszs/ack.vim'
 
+Plugin 'mileszs/ack.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
 Plugin 'tpope/vim-commentary'
-Plugin 'junegunn/vim-easy-align'
+Plugin 'tpope/vim-surround'
+Plugin 'justinmk/vim-sneak'
 Plugin 'matze/vim-move'
+Plugin 'chrisbra/SudoEdit.vim'
+Plugin 'tpope/vim-sleuth'
+Plugin 'junegunn/vim-easy-align'
 
 Plugin 'scrooloose/syntastic'
 Plugin 'plasticboy/vim-markdown'
@@ -32,17 +40,17 @@ Plugin 'elzr/vim-json'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-Plugin 'flazz/vim-colorschemes'
+Plugin 'w0ng/vim-hybrid'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on " Filetype auto-detection
 syntax on " Syntax highlighting
 
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
 set number
+" set tabstop=2
+" set shiftwidth=2
+" set softtabstop=2
 set expandtab " use spaces instead of tabs.
 set smarttab " lets tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
@@ -115,6 +123,12 @@ nmap ga <Plug>(EasyAlign)
 " vim-move modifier key
 let g:move_key_modifier = 'C'
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-space>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
+
 " Use silver searcher with ack.vim
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
@@ -132,6 +146,7 @@ let g:airline_theme='badwolf'
 let g:airline_powerline_fonts=1 " use powerline fonts
 
 " Set colors
-colorscheme Tomorrow-Night
+set background=dark
+colorscheme hybrid
 hi Normal ctermbg=none
 highlight NonText ctermbg=none
