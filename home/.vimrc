@@ -142,7 +142,7 @@ let g:ctrlp_max_height = 30
 
 " Airline
 set laststatus=2 " always show statusline
-let g:airline_theme='badwolf'
+let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts=1 " use powerline fonts
 
 " Set colors
