@@ -12,18 +12,20 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify'
+Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'sjl/gundo.vim'
 
 Plugin 'mileszs/ack.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'majutsushi/tagbar'
 
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
-Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-commentary' " bound to 'gcc' and 'gc' keys
 Plugin 'tpope/vim-surround'
 Plugin 'justinmk/vim-sneak'
 Plugin 'matze/vim-move'
@@ -32,8 +34,9 @@ Plugin 'tpope/vim-sleuth'
 Plugin 'junegunn/vim-easy-align'
 
 Plugin 'scrooloose/syntastic'
-Plugin 'plasticboy/vim-markdown'
+Plugin 'derekwyatt/vim-scala'
 Plugin 'pangloss/vim-javascript'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'chrisbra/csv.vim'
 Plugin 'elzr/vim-json'
 
@@ -48,9 +51,9 @@ filetype plugin indent on " Filetype auto-detection
 syntax on " Syntax highlighting
 
 set number
-" set tabstop=2
-" set shiftwidth=2
-" set softtabstop=2
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab " use spaces instead of tabs.
 set smarttab " lets tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
@@ -123,6 +126,9 @@ nmap ga <Plug>(EasyAlign)
 " vim-move modifier key
 let g:move_key_modifier = 'C'
 
+" YouCompleteMe use python3
+let g:ycm_server_python_interpreter="/usr/bin/python3"
+
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
@@ -134,19 +140,53 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" Map the key for toggling comments with vim-commentary
-nnoremap <leader>c <Plug>CommentaryLine
+" NERDTree
+silent! nmap <C-p> :NERDTreeToggle<CR>
+silent! map <F2> :NERDTreeToggle<CR>
+silent! map <F3> :NERDTreeFind<CR>
+let g:NERDTreeToggle="<F2>"
+let g:NERDTreeMapActivateNode="<F3>"
+let g:NERDTreeMapPreview="<F4>"
+" close if NERDTree is only buffer
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Let ctrlp have up to 30 results.
 let g:ctrlp_max_height = 30
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Airline
 set laststatus=2 " always show statusline
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts=1 " use powerline fonts
 
+" Rainbow parenthesis always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
 " Set colors
 set background=dark
 colorscheme hybrid
-hi Normal ctermbg=none
+highlight Normal ctermbg=none
 highlight NonText ctermbg=none
+
+" Signify
+" highlight lines in Sy and vimdiff etc.)
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+" highlight signs in Sy
+highlight SignifySignAdd    cterm=bold ctermbg=none ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=none ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=none ctermfg=227
+highlight clear SignColumn
