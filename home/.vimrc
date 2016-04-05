@@ -400,9 +400,6 @@ hi PmenuThumb  guifg=#F8F8F8 guibg=#8A95A7 gui=NONE ctermfg=lightgray ctermbg=da
 
 " Some convenient mappings
 "inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-if exists('g:spf13_map_cr_omni_complete')
-    inoremap <expr> <CR>     pumvisible() ? "\<C-y>" : "\<CR>"
-endif
 inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
