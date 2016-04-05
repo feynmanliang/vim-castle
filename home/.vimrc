@@ -172,7 +172,7 @@
     set tabpagemax=15 " Only show 15 tabs
     set showmode      " Display the current mode
     set cursorline    " Highlight current line
-    set cursorcolumn  " Highlight current column
+    "set cursorcolumn  " Highlight current column
 
     if has('cmdline_info')
         set ruler                   " Show the ruler
