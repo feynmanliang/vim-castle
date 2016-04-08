@@ -89,6 +89,7 @@
         Plugin 'chrisbra/SudoEdit.vim'
         Plugin 'tpope/vim-sleuth'
         Plugin 'junegunn/vim-easy-align'
+        Plugin 'ntpeters/vim-better-whitespace'
 
         Plugin 'scrooloose/syntastic'
         Plugin 'derekwyatt/vim-scala'
@@ -169,10 +170,27 @@
     highlight Normal ctermbg=none
     highlight NonText ctermbg=none
 
+    " Bold syntax highlighting {
+        highlight Comment     cterm=none
+        highlight Conditional cterm=bold
+        highlight Constant    cterm=none
+        highlight Identifier  term=none
+        highlight Number      cterm=bold
+        highlight PreProc     cterm=bold
+        highlight Special     term=none
+        highlight Statement   cterm=bold
+        highlight String      cterm=bold
+        highlight Todo        cterm=bold
+        highlight Type        cterm=bold
+        highlight Underlined  cterm=bold,underline
+        highlight Ignore      cterm=bold
+    " }
+
     set tabpagemax=15 " Only show 15 tabs
     set showmode      " Display the current mode
     set cursorline    " Highlight current line
     "set cursorcolumn  " Highlight current column
+    set colorcolumn=120 " Highlight max 120cw
 
     if has('cmdline_info')
         set ruler                   " Show the ruler
@@ -555,7 +573,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0 " no quickfix list
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " }
@@ -608,8 +626,8 @@ let g:move_key_modifier = 'C'
 
 " GUI Settings {
 
-" GVIM- (here instead of .gvimrc)
 if has('gui_running')
+    " GVIM- (here instead of .gvimrc)
     set guioptions-=T           " Remove the toolbar
     set lines=40                " 40 lines of text instead of 24
 else
