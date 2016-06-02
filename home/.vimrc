@@ -16,7 +16,7 @@
     " Basics {
         set nocompatible        " Must be first line
         if !WINDOWS()
-            set shell=/bin/sh
+            set shell=zsh\ -l
         endif
     " }
 
@@ -190,7 +190,7 @@
     set showmode      " Display the current mode
     set cursorline    " Highlight current line
     "set cursorcolumn  " Highlight current column
-    set colorcolumn=120 " Highlight max 120cw
+    set colorcolumn=120 " Highlight max 80cw
 
     if has('cmdline_info')
         set ruler                   " Show the ruler
@@ -224,7 +224,7 @@
     "set gdefault                    " use the `g` flag by default.
 
     " tab completion
-    set wildignore+=*.a,*.o
+    set wildignore+=*.a,*.o,*.so,*.pyc
     set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
     set wildignore+=.DS_Store,.git,.hg,.svn
     set wildignore+=*~,*.swp,*.tmp
@@ -400,6 +400,9 @@ map zh zH
 " Easier formatting
 nnoremap <silent> <leader>q gwip
 
+" Pything ctags
+map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
+
 " }
 
 " Plugins {
@@ -440,14 +443,13 @@ endif
 
 " NerdTree {
 if isdirectory(expand("~/.vim/bundle/nerdtree/"))
-    map <C-e> <plug>NERDTreeTabsToggle<CR>
     map <leader>e :NERDTreeFind<CR>
-    nmap <leader>nt :NERDTreeFind<CR>
+    nmap <leader>n :NERDTreeToggle<CR>
 
     let NERDTreeShowBookmarks=1
     let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
     let NERDTreeChDirMode=0
-    let NERDTreeQuitOnOpen=1
+    let NERDTreeQuitOnOpen=0
     let NERDTreeMouseMode=2
     let NERDTreeShowHidden=1
     let NERDTreeKeepTreeInNewTab=1
@@ -465,8 +467,9 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
     nnoremap <silent> <D-t> :CtrlP<CR>
     nnoremap <silent> <D-r> :CtrlPMRU<CR>
     let g:ctrlp_custom_ignore = {
-                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+      \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\v\.(exe|so|dll|pyc)$',
+      \ }
 
     if executable('ag')
         let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
@@ -544,9 +547,9 @@ if isdirectory(expand("~/.vim/bundle/YouCompleteMe/"))
     let g:ycm_collect_identifiers_from_tags_files = 1
 
     " remap Ultisnips for compatibility for YCM
-    let g:UltiSnipsExpandTrigger = '<C-j>'
-    let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-    let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+    " let g:UltiSnipsExpandTrigger = '<C-j>'
+    " let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+    " let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
     " Enable omni completion.
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -622,6 +625,9 @@ nmap ga <Plug>(EasyAlign)
 let g:move_key_modifier = 'C'
 " }
 
+" neovim {
+let g:python_host_prog='/home/fl350/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog='/home/fl350/.pyenv/versions/neovim3/bin/python'
 " }
 
 " GUI Settings {
