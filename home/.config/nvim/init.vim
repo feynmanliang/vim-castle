@@ -225,13 +225,13 @@
 
     " tab completion
     set wildignore+=*.a,*.o,*.so,*.pyc
-    set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+    "set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
     set wildignore+=.DS_Store,.git,.hg,.svn
     set wildignore+=*~,*.swp,*.tmp
     " Wildmenu
     if has("wildmenu")
         set wildignore+=*.a,*.o
-        set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+        "set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
         set wildignore+=.DS_Store,.git,.hg,.svn
         set wildignore+=*~,*.swp,*.tmp
         set wildmenu                    " Show list instead of just completing
