@@ -191,7 +191,7 @@
     set showmode      " Display the current mode
     set cursorline    " Highlight current line
     "set cursorcolumn  " Highlight current column
-    set colorcolumn=120 " Highlight max 80cw
+    set colorcolumn=120 " Highlight max 120cw
 
     if has('cmdline_info')
         set ruler                   " Show the ruler
@@ -444,6 +444,7 @@ endif
 
 " NerdTree {
 if isdirectory(expand("~/.vim/bundle/nerdtree/"))
+    "map <C-e> <plug>NERDTreeTabsToggle<CR>
     map <leader>e :NERDTreeFind<CR>
     nmap <leader>n :NERDTreeToggle<CR>
 
