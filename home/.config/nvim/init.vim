@@ -73,6 +73,7 @@
         endif
 
         Plugin 'ctrlpvim/ctrlp.vim'
+        Plugin 'd11wtq/ctrlp_bdelete.vim'
         Plugin 'scrooloose/nerdtree'
         Plugin 'Xuyuanp/nerdtree-git-plugin'
         Plugin 'majutsushi/tagbar'
@@ -500,6 +501,10 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
     let g:ctrlp_max_height = 30
 endif
 "}
+
+" ctrlp_bdelete.vim {
+call ctrlp_bdelete#init()
+" }
 
 " TagBar {
 if isdirectory(expand("~/.vim/bundle/tagbar/"))
