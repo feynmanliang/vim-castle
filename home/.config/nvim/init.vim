@@ -38,76 +38,46 @@
 
 " Bundles {
 
-    " The next three lines ensure that the ~/.vim/bundle/ system works
-    filetype off
-    set rtp+=~/.vim/bundle/Vundle.vim/
-    call vundle#begin()
-
-    " Add an UnBundle command {
-        function! UnBundle(arg, ...)
-        let bundle = vundle#config#init_bundle(a:arg, a:000)
-        call filter(g:vundle#bundles, 'v:val["name_spec"] != "' . a:arg . '"')
-        endfunction
-
-        com! -nargs=+         UnBundle
-        \ call UnBundle(<args>)
-    " }
-
+    call plug#begin('~/.config/nvim/plugged')
     " Plugins {
-        " let Vundle manage Vundle, required
-        Plugin 'VundleVim/Vundle.vim'
+        Plug 'tpope/vim-fugitive'
+        Plug 'mhinz/vim-signify'
+        " Plug 'mbbill/undotree'
+        " Plug 'luochen1990/rainbow'
 
-        Plugin 'tpope/vim-fugitive'
-        Plugin 'mhinz/vim-signify'
-        Plugin 'luochen1990/rainbow'
-        Plugin 'mbbill/undotree'
+        " Plug 'ctrlpvim/ctrlp.vim'
+        " Plug 'd11wtq/ctrlp_bdelete.vim'
+        Plug 'scrooloose/nerdtree'
+        " Plug 'Xuyuanp/nerdtree-git-plugin'
+        " Plug 'majutsushi/tagbar'
 
-        if executable('ag')
-            Bundle 'mileszs/ack.vim'
-            let g:ackprg = 'ag --vimgrep --nogroup --nocolor --column --smart-case'
-        elseif executable('ack-grep')
-            let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-            Bundle 'mileszs/ack.vim'
-        elseif executable('ack')
-            Bundle 'mileszs/ack.vim'
-        endif
+        " Plug 'scrooloose/syntastic'
+        " Plug 'Valloric/YouCompleteMe'
+        " Plug 'ervandew/supertab'
+        Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-        Plugin 'ctrlpvim/ctrlp.vim'
-        Plugin 'd11wtq/ctrlp_bdelete.vim'
-        Plugin 'scrooloose/nerdtree'
-        Plugin 'Xuyuanp/nerdtree-git-plugin'
-        Plugin 'majutsushi/tagbar'
+        Plug 'chrisbra/SudoEdit.vim'
+        Plug 'tpope/vim-commentary' " bound to 'gcc' and 'gc' keys
+        " Plug 'tpope/vim-surround'
+        " Plug 'justinmk/vim-sneak'
+        " Plug 'matze/vim-move'
+        " Plug 'tpope/vim-sleuth'
+        " Plug 'junegunn/vim-easy-align'
+        " Plug 'ntpeters/vim-better-whitespace'
 
-        Plugin 'ervandew/supertab'
-        Plugin 'Valloric/YouCompleteMe'
-        Plugin 'SirVer/ultisnips'
-        Plugin 'honza/vim-snippets'
+        " Plug 'derekwyatt/vim-scala'
+        Plug 'pangloss/vim-javascript'
+        " Plug 'kchmck/vim-coffee-script'
+        " Plug 'plasticboy/vim-markdown'
+        " Plug 'chrisbra/csv.vim'
+        " Plug 'elzr/vim-json'
 
-        Plugin 'tpope/vim-commentary' " bound to 'gcc' and 'gc' keys
-        Plugin 'tpope/vim-surround'
-        Plugin 'justinmk/vim-sneak'
-        Plugin 'matze/vim-move'
-        Plugin 'chrisbra/SudoEdit.vim'
-        Plugin 'tpope/vim-sleuth'
-        Plugin 'junegunn/vim-easy-align'
-        Plugin 'ntpeters/vim-better-whitespace'
+        Plug 'vim-airline/vim-airline'
+        Plug 'vim-airline/vim-airline-themes'
 
-        Plugin 'scrooloose/syntastic'
-        Plugin 'derekwyatt/vim-scala'
-        Plugin 'pangloss/vim-javascript'
-        Plugin 'kchmck/vim-coffee-script'
-        Plugin 'plasticboy/vim-markdown'
-        Plugin 'chrisbra/csv.vim'
-        Plugin 'elzr/vim-json'
-
-        Plugin 'vim-airline/vim-airline'
-        Plugin 'vim-airline/vim-airline-themes'
-
-        Plugin 'w0ng/vim-hybrid'
+        Plug 'w0ng/vim-hybrid'
     " }
-
-    " All of your Plugins must be added before the following line
-    call vundle#end()            " required
+    call plug#end()
 " }
 
 " General {
