@@ -62,13 +62,14 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'tpope/vim-dispatch'
 
         Plug 'neomake/neomake'
+
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'carlitux/deoplete-ternjs'
         Plug 'zchee/deoplete-jedi'
 
         " Plug 'ervandew/supertab'
         if has('python') && v:version >= 704
-            Plug 'SirVer/ultisnips', { 'on': [] } | Plug 'honza/vim-snippets'
+            Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
         endif
 
         " Automatic completion of parenthesis, brackets, etc.
@@ -107,7 +108,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
         Plug 'groenewege/vim-less', { 'for': 'less' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-        " Plug 'kchmck/vim-coffee-script'
+        Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
         " LaTeX compilation commands and autocomplete
         if executable('latexmk')
@@ -115,8 +116,6 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
           let g:LatexBox_latexmk_preview_continuously=1   " Auto-compile TeX on save
           let g:LatexBox_build_dir='latexmk'              " Build files are in 'latexmk'
         endif
-
-
 
         Plug 'plasticboy/vim-markdown'
         " Markdown preview
@@ -306,19 +305,18 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
 " }
 
 " Formatting {
-    set nowrap            " Do not wrap long lines
-    set autoindent        " Indent at the same level of the previous line
-    set shiftwidth=4      " Use indents of 4 spaces
-    set expandtab         " Tabs are spaces, not tabs
-    set smarttab          " lets tab key insert 'tab stops', and bksp deletes tabs.
-    set shiftround        " tab / shifting moves to closest tabstop.
-    set smartindent       " Intellegently dedent / indent new lines based on rules.
-    set tabstop=4         " An indentation every 4 columns
-    set softtabstop=4     " Let backspace delete indent
-    set nojoinspaces      " Prevents inserting two spaces after punctuation on a join (J)
-    set splitright        " Puts new vsplit windows to the right of the current
-    set splitbelow        " Puts new split windows to the bottom of the current
-                          " set matchpairs+=<:>             " Match, to be used with %
+    set nowrap        " Do not wrap long lines
+    set autoindent    " Indent at the same level of the previous line
+    set shiftwidth=4  " Use indents of 4 spaces
+    set expandtab     " Tabs are spaces, not tabs
+    set smarttab      " lets tab key insert 'tab stops', and bksp deletes tabs.
+    set shiftround    " tab / shifting moves to closest tabstop.
+    set smartindent   " Intellegently dedent / indent new lines based on rules.
+    set tabstop=4     " An indentation every 4 columns
+    set softtabstop=4 " Let backspace delete indent
+    set nojoinspaces  " Prevents inserting two spaces after punctuation on a join (J)
+    set splitright    " Puts new vsplit windows to the right of the current
+    set splitbelow    " Puts new split windows to the bottom of the current
     set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
     " set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
@@ -456,7 +454,7 @@ map zh zH
 nnoremap <silent> <leader>q gwip
 
 " Python ctags
-map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
+" map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
 
 " Switch to buffer
 map <F2> :ls<CR>:b<Space>
@@ -490,13 +488,16 @@ set completeopt=menu,preview,longest
 " }
 
 " Ctags {
-set tags=./tags;/,~/.vimtags
+set tags=~/.vimtags
+
+" enable asynchronous tag file updates
+let g:easytags_async = 1
 
 " Make tags placed in .git/tags file available in all levels of a repository
-let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-if gitroot != ''
-    let &tags = &tags . ',' . gitroot . '/.git/tags'
-endif
+" let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+" if gitroot != ''
+"     let &tags = &tags . ',' . gitroot . '/.git/tags'
+" endif
 " }
 
 " NerdTree {
@@ -576,6 +577,14 @@ endif
 " deoplete.nvim {
 if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#enable_at_startup = 1
+endif
+" }
+
+" ultisnips {
+if isdirectory(expand("~/.config/nvim/plugged/ultisnips/"))
+    let g:UltiSnipsExpandTrigger = "<tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 endif
 " }
 
