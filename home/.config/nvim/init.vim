@@ -45,8 +45,8 @@
         " Plug 'mbbill/undotree'
         " Plug 'luochen1990/rainbow'
 
-        " Plug 'ctrlpvim/ctrlp.vim'
-        " Plug 'd11wtq/ctrlp_bdelete.vim'
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf.vim'
         Plug 'scrooloose/nerdtree'
         " Plug 'Xuyuanp/nerdtree-git-plugin'
         " Plug 'majutsushi/tagbar'
@@ -471,10 +471,6 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
     let g:ctrlp_max_height = 30
 endif
 "}
-
-" ctrlp_bdelete.vim {
-call ctrlp_bdelete#init()
-" }
 
 " TagBar {
 if isdirectory(expand("~/.vim/bundle/tagbar/"))
