@@ -1,5 +1,14 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 
+" Neovim {
+
+" Neovim Python Provider {
+let g:python_host_prog="/home/fliang/.pyenv/versions/neovim2/bin/python"
+let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
+" }
+
+" }
+
 " Environment {
     " Identify platform {
         silent function! OSX()
@@ -42,35 +51,113 @@
     " Plugins {
         Plug 'tpope/vim-fugitive'
         Plug 'mhinz/vim-signify'
-        " Plug 'mbbill/undotree'
-        " Plug 'luochen1990/rainbow'
+        Plug 'mbbill/undotree'
+        Plug 'luochen1990/rainbow'
 
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
         Plug 'scrooloose/nerdtree'
         " Plug 'Xuyuanp/nerdtree-git-plugin'
-        " Plug 'majutsushi/tagbar'
 
-        " Plug 'scrooloose/syntastic'
-        " Plug 'Valloric/YouCompleteMe'
+        Plug 'tpope/vim-dispatch'
+
+        Plug 'neomake/neomake'
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        Plug 'carlitux/deoplete-ternjs'
+        Plug 'zchee/deoplete-jedi'
+
         " Plug 'ervandew/supertab'
-        Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+        if has('python') && v:version >= 704
+            Plug 'SirVer/ultisnips', { 'on': [] } | Plug 'honza/vim-snippets'
+        endif
+
+        " Automatic completion of parenthesis, brackets, etc.
+        Plug 'Raimondi/delimitMate'
+        let g:delimitMate_expand_cr=1                 " Put new brace on newline after CR
+
+        " On save, create directories if they don't exist
+        Plug 'dockyard/vim-easydir'
+
+        " On Arch Linux, the exuberant-ctags executable is named 'ctags'. Elsewhere, it
+        " is 'ctags-exuberant'. On Macs, the ctags executable provided is NOT exuberant
+        " ctags.
+        if executable('ctags') && !OSX() || executable('ctags-exuberant')
+            Plug 'xolox/vim-easytags' | Plug 'xolox/vim-misc'
+            if !WINDOWS()
+                let g:easytags_async=1
+            endif
+        endif
+
+        " Class outline viewer
+        if has('patch-7.0.167')
+            Plug 'majutsushi/tagbar'
+            nnoremap <leader>tb :TagbarToggle<cr>
+        endif
 
         Plug 'chrisbra/SudoEdit.vim'
         Plug 'tpope/vim-commentary' " bound to 'gcc' and 'gc' keys
-        " Plug 'tpope/vim-surround'
-        " Plug 'justinmk/vim-sneak'
-        " Plug 'matze/vim-move'
-        " Plug 'tpope/vim-sleuth'
-        " Plug 'junegunn/vim-easy-align'
-        " Plug 'ntpeters/vim-better-whitespace'
+        Plug 'tpope/vim-surround'
+        Plug 'justinmk/vim-sneak'
+        Plug 'matze/vim-move'
+        Plug 'tpope/vim-sleuth'
+        Plug 'junegunn/vim-easy-align'
+        Plug 'ntpeters/vim-better-whitespace'
 
-        " Plug 'derekwyatt/vim-scala'
-        Plug 'pangloss/vim-javascript'
+        Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
+        Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
+        Plug 'groenewege/vim-less', { 'for': 'less' }
+        Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         " Plug 'kchmck/vim-coffee-script'
-        " Plug 'plasticboy/vim-markdown'
-        " Plug 'chrisbra/csv.vim'
-        " Plug 'elzr/vim-json'
+
+        " LaTeX compilation commands and autocomplete
+        if executable('latexmk')
+          Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
+          let g:LatexBox_latexmk_preview_continuously=1   " Auto-compile TeX on save
+          let g:LatexBox_build_dir='latexmk'              " Build files are in 'latexmk'
+        endif
+
+
+
+        Plug 'plasticboy/vim-markdown'
+        " Markdown preview
+        " if has('nvim') && executable('cargo')
+        "   function! g:BuildComposer(info)
+        "     if a:info.status !=# 'unchanged' || a:info.force
+        "       !cargo build --release
+        "       UpdateRemotePlugins
+        "     endif
+        "   endfunction
+
+        "   Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+        "   let g:markdown_composer_syntax_theme='hybrid'
+        " elseif executable('npm')
+        "   Plug 'euclio/vim-instant-markdown', {
+        "         \ 'for': 'markdown',
+        "         \ 'do': 'npm install euclio/vim-instant-markdown-d'
+        "         \}
+        " endif
+
+        Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
+        Plug 'cespare/vim-toml', { 'for': 'toml' }
+        Plug 'chrisbra/csv.vim', { 'for': 'csv' }
+        Plug 'elzr/vim-json', { 'for': 'json' }
+        "
+        "" Filetype plugin for Scala and SBT
+        " Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
+        " Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
+        "
+        " Plug 'racer-rust/vim-racer'
+        "
+        " Plug 'rust-lang/rust.vim'
+        " let g:rustfmt_autosave = 1
+        " let g:rustfmt_fail_silently = 1
+        "
+        " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+        " " Haskell omnifunc
+        " if executable('ghc-mod')
+        "   Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+        "   let g:necoghc_enable_detailed_browse=1          " Show types of symbols
+        " endif
 
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
@@ -265,10 +352,6 @@ map <C-K> <C-W>k<C-W>_
 map <C-L> <C-W>l<C-W>_
 map <C-H> <C-W>h<C-W>_
 
-" Wrapped lines goes down/up to next row, rather than next line in file.
-noremap j gj
-noremap k gk
-
 " End/Start of line motion keys act relative to row/wrap width in the
 " presence of `:set wrap`, and relative to line for `:set nowrap`.
 " Default vim behaviour is to act relative to text line in both cases
@@ -372,8 +455,11 @@ map zh zH
 " Easier formatting
 nnoremap <silent> <leader>q gwip
 
-" Pything ctags
+" Python ctags
 map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
+
+" Switch to buffer
+map <F2> :ls<CR>:b<Space>
 
 " }
 
@@ -414,7 +500,7 @@ endif
 " }
 
 " NerdTree {
-if isdirectory(expand("~/.vim/bundle/nerdtree/"))
+if isdirectory(expand("~/.config/nvim/plugged/nerdtree/"))
     "map <C-e> <plug>NERDTreeTabsToggle<CR>
     map <leader>e :NERDTreeFind<CR>
     nmap <leader>n :NERDTreeToggle<CR>
@@ -434,58 +520,44 @@ if isdirectory(expand("~/.vim/bundle/nerdtree/"))
 endif
 " }
 
-" ctrlp {
-if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
-    let g:ctrlp_working_path_mode = 'ra'
-    nnoremap <silent> <D-t> :CtrlP<CR>
-    nnoremap <silent> <D-r> :CtrlPMRU<CR>
-    let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-      \ 'file': '\v\.(exe|so|dll|pyc)$',
-      \ }
+" fzf {
+if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
+    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git --ignore node_modules --ignore target --ignore dist --ignore build -g ""'
+    nnoremap <c-p> :Files<cr>
+    nnoremap <c-l> :Ag<cr>
 
-    if executable('ag')
-        let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
-    elseif executable('ack-grep')
-        let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
-    elseif executable('ack')
-        let s:ctrlp_fallback = 'ack %s --nocolor -f'
-        " On Windows use "dir" as fallback command.
-    elseif WINDOWS()
-        let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
-    else
-        let s:ctrlp_fallback = 'find %s -type f'
-    endif
-    if exists("g:ctrlp_user_command")
-        unlet g:ctrlp_user_command
-    endif
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': s:ctrlp_fallback
-                \ }
+    " Mapping selecting mappings
+    nmap <leader><tab> <plug>(fzf-maps-n)
+    xmap <leader><tab> <plug>(fzf-maps-x)
+    omap <leader><tab> <plug>(fzf-maps-o)
 
-    " Let ctrlp have up to 30 results.
-    let g:ctrlp_max_height = 30
+    " Insert mode completion
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
 endif
 "}
 
+" better-whitespace {
+if isdirectory(expand("~/.config/nvim/plugged/vim-better-whitespace/"))
+    nnoremap <leader>W :StripWhitespace<CR>
+endif
+" }
+
 " TagBar {
-if isdirectory(expand("~/.vim/bundle/tagbar/"))
+if isdirectory(expand("~/.config/nvim/plugged/tagbar/"))
     nnoremap <silent> <leader>tt :TagbarToggle<CR>
 endif
 "}
 
 " Rainbow {
-if isdirectory(expand("~/.vim/bundle/rainbow/"))
+if isdirectory(expand("~/.config/nvim/plugged/rainbow/"))
     let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 endif
 "}
 
 " Fugitive {
-if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
+if isdirectory(expand("~/.config/nvim/plugged/vim-fugitive/"))
     nnoremap <silent> <leader>gs :Gstatus<CR>
     nnoremap <silent> <leader>gd :Gdiff<CR>
     nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -501,57 +573,33 @@ if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
 endif
 " }
 
-" YouCompleteMe {
-if isdirectory(expand("~/.vim/bundle/YouCompleteMe/"))
-    " Use Python3
-    let g:ycm_server_python_interpreter="/usr/bin/python3"
-
-    " make YCM compatible with UltiSnips (using supertab)
-    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-    let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-    let g:SuperTabDefaultCompletionType = '<C-n>'
-
-    " better key bindings for UltiSnipsExpandTrigger
-    let g:UltiSnipsExpandTrigger = "<tab>"
-    let g:UltiSnipsJumpForwardTrigger = "<tab>"
-    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-    " enable completion from tags
-    let g:ycm_collect_identifiers_from_tags_files = 1
-
-    " remap Ultisnips for compatibility for YCM
-    " let g:UltiSnipsExpandTrigger = '<C-j>'
-    " let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-    " let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-    " Enable omni completion.
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" deoplete.nvim {
+if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
+    let g:deoplete#enable_at_startup = 1
 endif
 " }
 
 " UndoTree {
-if isdirectory(expand("~/.vim/bundle/undotree/"))
+if isdirectory(expand("~/.config/nvim/plugged/undotree/"))
     nnoremap <Leader>u :UndotreeToggle<CR>
     " If undotree is opened, it is likely one wants to interact with it.
     let g:undotree_SetFocusWhenToggle=1
 endif
 " }
 
-" Syntastic {
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" neomake {
+autocmd! BufWritePost,BufEnter * Neomake
+" }
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0 " no quickfix list
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" Syntastic {
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 0 " no quickfix list
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 " }
 
 " Signify {
@@ -581,7 +629,7 @@ nmap ga <Plug>(EasyAlign)
     "
     " See `:echo g:airline_theme_map` for some more choices
     " Default in terminal vim is 'dark'
-    if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
+    if isdirectory(expand("~/.config/nvim/plugged/vim-airline-themes/"))
         if !exists('g:airline_theme')
             let g:airline_theme = 'powerlineish'
         endif
@@ -596,11 +644,6 @@ nmap ga <Plug>(EasyAlign)
 " vim-move {
 " vim-move modifier key
 let g:move_key_modifier = 'C'
-" }
-
-" neovim {
-let g:python_host_prog='/home/fl350/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog='/home/fl350/.pyenv/versions/neovim3/bin/python'
 " }
 
 " GUI Settings {
@@ -654,20 +697,6 @@ endfunction
 call InitializeDirectories()
 " }
 
-" Strip whitespace {
-function! StripTrailingWhitespace()
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " do the business:
-    %s/\s\+$//e
-    " clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-" }
-
 " Shell command {
 function! s:RunShellCommand(cmdline)
     botright new
@@ -693,12 +722,3 @@ command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
 
 " }
 
-
-" Neovim {
-
-" Python Provider {
-let g:python_host_prog = "/usr/bin/python2"
-let g:python3_host_prog = "/usr/bin/python3"
-" }
-
-" }
