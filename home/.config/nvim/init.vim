@@ -69,7 +69,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
 
         " Plug 'ervandew/supertab'
         if has('python') && v:version >= 704
-            Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+            Plug 'SirVer/ultisnips', { 'on': [] } | Plug 'honza/vim-snippets'
         endif
 
         " Automatic completion of parenthesis, brackets, etc.
@@ -150,8 +150,9 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         " Plug 'rust-lang/rust.vim'
         " let g:rustfmt_autosave = 1
         " let g:rustfmt_fail_silently = 1
-        "
-        " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
+        Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
         " " Haskell omnifunc
         " if executable('ghc-mod')
         "   Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
@@ -319,8 +320,6 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     set splitbelow    " Puts new split windows to the bottom of the current
     set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
     " set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-    " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     "autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
     autocmd FileType haskell,puppet,ruby,scala,yml setlocal expandtab shiftwidth=2 softtabstop=2
@@ -542,6 +541,7 @@ endif
 " better-whitespace {
 if isdirectory(expand("~/.config/nvim/plugged/vim-better-whitespace/"))
     nnoremap <leader>W :StripWhitespace<CR>
+    let g:strip_whitespace_on_save = 1
 endif
 " }
 
@@ -577,6 +577,11 @@ endif
 " deoplete.nvim {
 if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_ignore_case = 1
+    let g:deoplete#enable_smart_case = 1
+    let g:deoplete#enable_camel_case = 1
+    call deoplete#custom#set('_', 'min_pattern_length', 1)
 endif
 " }
 
@@ -585,6 +590,13 @@ if isdirectory(expand("~/.config/nvim/plugged/ultisnips/"))
     let g:UltiSnipsExpandTrigger = "<tab>"
     let g:UltiSnipsJumpForwardTrigger = "<tab>"
     let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+    " defer loading ultisnips until first entering insert mode
+    augroup load_us
+        autocmd!
+        autocmd InsertEnter * call plug#load('ultisnips')
+                    \| autocmd! load_us
+    augroup END
 endif
 " }
 
