@@ -113,28 +113,29 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         " LaTeX compilation commands and autocomplete
         if executable('latexmk')
           Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
-          let g:LatexBox_latexmk_preview_continuously=1   " Auto-compile TeX on save
-          let g:LatexBox_build_dir='latexmk'              " Build files are in 'latexmk'
+          let g:LatexBox_latexmk_preview_continuously=1 " Auto-compile TeX on save
+          let g:LatexBox_build_dir='latexmk'            " Build files are in 'latexmk'
+          let g:LatexBox_loaded_matchparen=0            " Disable LatexBox paren matching for performance
         endif
 
         Plug 'plasticboy/vim-markdown'
         " Markdown preview
-        " if has('nvim') && executable('cargo')
-        "   function! g:BuildComposer(info)
-        "     if a:info.status !=# 'unchanged' || a:info.force
-        "       !cargo build --release
-        "       UpdateRemotePlugins
-        "     endif
-        "   endfunction
+        if has('nvim') && executable('cargo')
+          function! g:BuildComposer(info)
+            if a:info.status !=# 'unchanged' || a:info.force
+              !cargo build --release
+              UpdateRemotePlugins
+            endif
+          endfunction
 
-        "   Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
-        "   let g:markdown_composer_syntax_theme='hybrid'
-        " elseif executable('npm')
-        "   Plug 'euclio/vim-instant-markdown', {
-        "         \ 'for': 'markdown',
-        "         \ 'do': 'npm install euclio/vim-instant-markdown-d'
-        "         \}
-        " endif
+          Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+          let g:markdown_composer_syntax_theme='hybrid'
+        elseif executable('npm')
+          Plug 'euclio/vim-instant-markdown', {
+                \ 'for': 'markdown',
+                \ 'do': 'npm install euclio/vim-instant-markdown-d'
+                \}
+        endif
 
         Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
         Plug 'cespare/vim-toml', { 'for': 'toml' }
@@ -273,7 +274,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     set backspace=indent,eol,start  " Backspace for dummies
     set linespace=0                 " No extra spaces between rows
     set number                      " Line numbers on
-    set relativenumber              " Relative line numbers
+    " set relativenumber              " Relative line numbers
     set showmatch                   " Show matching brackets/parenthesis
     set incsearch                   " Find as you type search
     set hlsearch                    " Highlight search terms
@@ -331,6 +332,10 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     autocmd FileType haskell setlocal commentstring=--\ %s
     " Workaround broken colour highlighting in Haskell
     autocmd FileType haskell,rust setlocal nospell
+
+    " LaTex editing performance tweaks
+    au FileType tex setlocal nocursorline norelativenumber
+    au FileType tex :NoMatchPare
 " }
 
 " Key (re)Mappings {
