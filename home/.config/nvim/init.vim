@@ -66,6 +66,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'carlitux/deoplete-ternjs'
         Plug 'zchee/deoplete-jedi'
+        Plug 'zchee/deoplete-clang'
 
         " Plug 'ervandew/supertab'
         if has('python') && v:version >= 704
@@ -108,6 +109,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
         Plug 'groenewege/vim-less', { 'for': 'less' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+        Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
         Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
         " LaTeX compilation commands and autocomplete
@@ -469,10 +471,10 @@ map <F2> :ls<CR>:b<Space>
 
 " OmniComplete {
 if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-                \if &omnifunc == "" |
-                \setlocal omnifunc=syntaxcomplete#Complete |
-                \endif
+autocmd Filetype *
+            \if &omnifunc == "" |
+            \setlocal omnifunc=syntaxcomplete#Complete |
+            \endif
 endif
 
 hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
@@ -506,115 +508,124 @@ let g:easytags_async = 1
 
 " NerdTree {
 if isdirectory(expand("~/.config/nvim/plugged/nerdtree/"))
-    "map <C-e> <plug>NERDTreeTabsToggle<CR>
-    map <leader>e :NERDTreeFind<CR>
-    nmap <leader>n :NERDTreeToggle<CR>
+"map <C-e> <plug>NERDTreeTabsToggle<CR>
+map <leader>e :NERDTreeFind<CR>
+nmap <leader>n :NERDTreeToggle<CR>
 
-    let NERDTreeShowBookmarks=1
-    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-    let NERDTreeChDirMode=0
-    let NERDTreeQuitOnOpen=0
-    let NERDTreeMouseMode=2
-    let NERDTreeShowHidden=1
-    let NERDTreeKeepTreeInNewTab=1
-    let g:nerdtree_tabs_open_on_gui_startup=0
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=0
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
 
-    " close if NERDTree is only buffer
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" close if NERDTree is only buffer
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 endif
 " }
 
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
-    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git --ignore node_modules --ignore target --ignore dist --ignore build -g ""'
-    nnoremap <c-p> :Files<cr>
-    nnoremap <c-l> :Ag<cr>
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git --ignore node_modules --ignore target --ignore dist --ignore build -g ""'
+nnoremap <c-p> :Files<cr>
+nnoremap <c-l> :Ag<cr>
 
-    " Mapping selecting mappings
-    nmap <leader><tab> <plug>(fzf-maps-n)
-    xmap <leader><tab> <plug>(fzf-maps-x)
-    omap <leader><tab> <plug>(fzf-maps-o)
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 
-    " Insert mode completion
-    imap <c-x><c-f> <plug>(fzf-complete-path)
-    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-    imap <c-x><c-l> <plug>(fzf-complete-line)
+" Insert mode completion
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 endif
 "}
 
 " better-whitespace {
 if isdirectory(expand("~/.config/nvim/plugged/vim-better-whitespace/"))
-    nnoremap <leader>W :StripWhitespace<CR>
-    let g:strip_whitespace_on_save = 1
+nnoremap <leader>W :StripWhitespace<CR>
+let g:strip_whitespace_on_save = 1
 endif
 " }
 
 " TagBar {
 if isdirectory(expand("~/.config/nvim/plugged/tagbar/"))
-    nnoremap <silent> <leader>tt :TagbarToggle<CR>
+nnoremap <silent> <leader>tt :TagbarToggle<CR>
 endif
 "}
 
 " Rainbow {
 if isdirectory(expand("~/.config/nvim/plugged/rainbow/"))
-    let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 endif
 "}
 
 " Fugitive {
 if isdirectory(expand("~/.config/nvim/plugged/vim-fugitive/"))
-    nnoremap <silent> <leader>gs :Gstatus<CR>
-    nnoremap <silent> <leader>gd :Gdiff<CR>
-    nnoremap <silent> <leader>gc :Gcommit<CR>
-    nnoremap <silent> <leader>gb :Gblame<CR>
-    nnoremap <silent> <leader>gl :Glog<CR>
-    nnoremap <silent> <leader>gp :Git push<CR>
-    nnoremap <silent> <leader>gr :Gread<CR>
-    nnoremap <silent> <leader>gw :Gwrite<CR>
-    nnoremap <silent> <leader>ge :Gedit<CR>
-    " Mnemonic _i_nteractive
-    nnoremap <silent> <leader>gi :Git add -p %<CR>
-    nnoremap <silent> <leader>gg :SignifyToggle<CR>
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gr :Gread<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>ge :Gedit<CR>
+" Mnemonic _i_nteractive
+nnoremap <silent> <leader>gi :Git add -p %<CR>
+nnoremap <silent> <leader>gg :SignifyToggle<CR>
 endif
 " }
 
 " deoplete.nvim {
 if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_ignore_case = 1
     let g:deoplete#enable_smart_case = 1
     let g:deoplete#enable_camel_case = 1
+    let deoplete#sources#jedi#show_docstring = 1
     call deoplete#custom#set('_', 'min_pattern_length', 1)
+
+    let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
+    let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+
 endif
 " }
 
 " ultisnips {
 if isdirectory(expand("~/.config/nvim/plugged/ultisnips/"))
-    let g:UltiSnipsExpandTrigger = "<tab>"
-    let g:UltiSnipsJumpForwardTrigger = "<tab>"
-    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-    " defer loading ultisnips until first entering insert mode
-    augroup load_us
-        autocmd!
-        autocmd InsertEnter * call plug#load('ultisnips')
-                    \| autocmd! load_us
-    augroup END
+" defer loading ultisnips until first entering insert mode
+augroup load_us
+    autocmd!
+    autocmd InsertEnter * call plug#load('ultisnips')
+                \| autocmd! load_us
+augroup END
 endif
 " }
 
 " UndoTree {
 if isdirectory(expand("~/.config/nvim/plugged/undotree/"))
-    nnoremap <Leader>u :UndotreeToggle<CR>
-    " If undotree is opened, it is likely one wants to interact with it.
-    let g:undotree_SetFocusWhenToggle=1
+nnoremap <Leader>u :UndotreeToggle<CR>
+" If undotree is opened, it is likely one wants to interact with it.
+let g:undotree_SetFocusWhenToggle=1
 endif
 " }
 
 " neomake {
 autocmd! BufWritePost,BufEnter * Neomake
+nmap <Leader><Space>o :lopen<CR>      " open location window
+nmap <Leader><Space>c :lclose<CR>     " close location window
+" nmap <Leader><Space>, :ll<CR>         " go to current error/warning
+" nmap <Leader><Space>n :lnext<CR>      " next error/warning
+" nmap <Leader><Space>p :lprev<CR>      " previous error/warning
 " }
 
 " Syntastic {
@@ -645,26 +656,26 @@ nmap ga <Plug>(EasyAlign)
 " }
 
 " vim-airline {
-    " Set configuration options for the statusline plugin vim-airline.
-    " Use the powerline theme and optionally enable powerline symbols.
-    " To use the symbols , , , , , , and .in the statusline
-    " segments add the following to your .vimrc.before.local file:
-    let g:airline_powerline_fonts=1
-    " If the previous symbols do not render for you then install a
-    " powerline enabled font.
-    "
-    " See `:echo g:airline_theme_map` for some more choices
-    " Default in terminal vim is 'dark'
-    if isdirectory(expand("~/.config/nvim/plugged/vim-airline-themes/"))
-        if !exists('g:airline_theme')
-            let g:airline_theme = 'powerlineish'
-        endif
-        if !exists('g:airline_powerline_fonts')
-            " Use the default set of separators with a few customizations
-            let g:airline_left_sep='›'  " Slightly fancier than '>'
-            let g:airline_right_sep='‹' " Slightly fancier than '<'
-        endif
+" Set configuration options for the statusline plugin vim-airline.
+" Use the powerline theme and optionally enable powerline symbols.
+" To use the symbols , , , , , , and .in the statusline
+" segments add the following to your .vimrc.before.local file:
+let g:airline_powerline_fonts=1
+" If the previous symbols do not render for you then install a
+" powerline enabled font.
+"
+" See `:echo g:airline_theme_map` for some more choices
+" Default in terminal vim is 'dark'
+if isdirectory(expand("~/.config/nvim/plugged/vim-airline-themes/"))
+    if !exists('g:airline_theme')
+        let g:airline_theme = 'powerlineish'
     endif
+    if !exists('g:airline_powerline_fonts')
+        " Use the default set of separators with a few customizations
+        let g:airline_left_sep='›'  " Slightly fancier than '>'
+        let g:airline_right_sep='‹' " Slightly fancier than '<'
+    endif
+endif
 " }
 
 " vim-move {
@@ -675,14 +686,14 @@ let g:move_key_modifier = 'C'
 " GUI Settings {
 
 if has('gui_running')
-    " GVIM- (here instead of .gvimrc)
-    set guioptions-=T           " Remove the toolbar
-    set lines=40                " 40 lines of text instead of 24
+" GVIM- (here instead of .gvimrc)
+set guioptions-=T           " Remove the toolbar
+set lines=40                " 40 lines of text instead of 24
 else
-    if &term == 'xterm' || &term == 'screen'
-        set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-    endif
-    "set term=builtin_ansi       " Make arrow and other keys work
+if &term == 'xterm' || &term == 'screen'
+    set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+endif
+"set term=builtin_ansi       " Make arrow and other keys work
 endif
 
 " }
@@ -691,55 +702,55 @@ endif
 
 " Initialize directories {
 function! InitializeDirectories()
-    let parent = $HOME
-    let prefix = 'vim'
-    let dir_list = {
-                \ 'backup': 'backupdir',
-                \ 'views': 'viewdir',
-                \ 'swap': 'directory' }
+let parent = $HOME
+let prefix = 'vim'
+let dir_list = {
+            \ 'backup': 'backupdir',
+            \ 'views': 'viewdir',
+            \ 'swap': 'directory' }
 
-    if has('persistent_undo')
-        let dir_list['undo'] = 'undodir'
-    endif
+if has('persistent_undo')
+    let dir_list['undo'] = 'undodir'
+endif
 
-    let common_dir = parent . '/.' . prefix
+let common_dir = parent . '/.' . prefix
 
-    for [dirname, settingname] in items(dir_list)
-        let directory = common_dir . dirname . '/'
-        if exists("*mkdir")
-            if !isdirectory(directory)
-                call mkdir(directory)
-            endif
-        endif
+for [dirname, settingname] in items(dir_list)
+    let directory = common_dir . dirname . '/'
+    if exists("*mkdir")
         if !isdirectory(directory)
-            echo "Warning: Unable to create backup directory: " . directory
-            echo "Try: mkdir -p " . directory
-        else
-            let directory = substitute(directory, " ", "\\\\ ", "g")
-            exec "set " . settingname . "=" . directory
+            call mkdir(directory)
         endif
-    endfor
+    endif
+    if !isdirectory(directory)
+        echo "Warning: Unable to create backup directory: " . directory
+        echo "Try: mkdir -p " . directory
+    else
+        let directory = substitute(directory, " ", "\\\\ ", "g")
+        exec "set " . settingname . "=" . directory
+    endif
+endfor
 endfunction
 call InitializeDirectories()
 " }
 
 " Shell command {
 function! s:RunShellCommand(cmdline)
-    botright new
+botright new
 
-    setlocal buftype=nofile
-    setlocal bufhidden=delete
-    setlocal nobuflisted
-    setlocal noswapfile
-    setlocal nowrap
-    setlocal filetype=shell
-    setlocal syntax=shell
+setlocal buftype=nofile
+setlocal bufhidden=delete
+setlocal nobuflisted
+setlocal noswapfile
+setlocal nowrap
+setlocal filetype=shell
+setlocal syntax=shell
 
-    call setline(1, a:cmdline)
-    call setline(2, substitute(a:cmdline, '.', '=', 'g'))
-    execute 'silent $read !' . escape(a:cmdline, '%#')
-    setlocal nomodifiable
-    1
+call setline(1, a:cmdline)
+call setline(2, substitute(a:cmdline, '.', '=', 'g'))
+execute 'silent $read !' . escape(a:cmdline, '%#')
+setlocal nomodifiable
+1
 endfunction
 
 command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
