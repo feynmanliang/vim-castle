@@ -106,7 +106,10 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'ntpeters/vim-better-whitespace'
 
         Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
+        Plug 'digitaltoad/vim-pug', { 'for' : ['jade'] }
+        Plug 'ap/vim-css-color'
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
+        Plug 'ap/vim-css-color'
         Plug 'groenewege/vim-less', { 'for': 'less' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
