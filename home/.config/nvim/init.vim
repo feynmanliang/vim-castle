@@ -3,8 +3,8 @@
 " Neovim {
 
 " Neovim Python Provider {
-let g:python_host_prog="/home/fliang/.pyenv/versions/neovim2/bin/python"
-let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
+let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
+let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
 " }
 
 " }
@@ -155,10 +155,12 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
         " " Haskell omnifunc
-        " if executable('ghc-mod')
-        "   Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-        "   let g:necoghc_enable_detailed_browse=1          " Show types of symbols
-        " endif
+        if executable('ghc-mod')
+          Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+          let g:necoghc_enable_detailed_browse=1          " Show types of symbols
+        endif
+        Plug 'vim-scripts/haskell.vim', { 'for': 'haskell' }
+        Plug 'vim-scripts/Cabal.vim', { 'for': 'cabal' }
 
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
