@@ -84,6 +84,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         " is 'ctags-exuberant'. On Macs, the ctags executable provided is NOT exuberant
         " ctags.
         if executable('ctags') && !OSX() || executable('ctags-exuberant')
+            set tags=~/.vimtags
             Plug 'xolox/vim-easytags' | Plug 'xolox/vim-misc'
             if !WINDOWS()
                 let g:easytags_async=1
@@ -120,7 +121,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
           Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
           let g:LatexBox_latexmk_preview_continuously=1 " Auto-compile TeX on save
           let g:LatexBox_build_dir='latexmk'            " Build files are in 'latexmk'
-          let g:LatexBox_loaded_matchparen=0            " Disable LatexBox paren matching for performance
+          " let g:LatexBox_loaded_matchparen=0            " Disable LatexBox paren matching for performance
         endif
 
         Plug 'plasticboy/vim-markdown'
@@ -279,7 +280,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     set backspace=indent,eol,start  " Backspace for dummies
     set linespace=0                 " No extra spaces between rows
     set number                      " Line numbers on
-    " set relativenumber              " Relative line numbers
+    set relativenumber              " Relative line numbers
     set showmatch                   " Show matching brackets/parenthesis
     set incsearch                   " Find as you type search
     set hlsearch                    " Highlight search terms
@@ -339,8 +340,8 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     autocmd FileType haskell,rust setlocal nospell
 
     " LaTex editing performance tweaks
-    au FileType tex setlocal nocursorline norelativenumber
-    au FileType tex :NoMatchPare
+    au FileType tex setlocal nocursorline
+    " au FileType tex :NoMatchParen
 " }
 
 " Key (re)Mappings {
@@ -494,19 +495,6 @@ inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
 " Automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
-" }
-
-" Ctags {
-set tags=~/.vimtags
-
-" enable asynchronous tag file updates
-let g:easytags_async = 1
-
-" Make tags placed in .git/tags file available in all levels of a repository
-" let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-" if gitroot != ''
-"     let &tags = &tags . ',' . gitroot . '/.git/tags'
-" endif
 " }
 
 " NerdTree {
