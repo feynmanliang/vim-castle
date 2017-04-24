@@ -57,7 +57,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
         Plug 'scrooloose/nerdtree'
-        " Plug 'Xuyuanp/nerdtree-git-plugin'
+        Plug 'Xuyuanp/nerdtree-git-plugin'
 
         Plug 'tpope/vim-dispatch'
 
@@ -65,8 +65,9 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
 
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'carlitux/deoplete-ternjs'
-        Plug 'zchee/deoplete-jedi'
         Plug 'zchee/deoplete-clang'
+        Plug 'zchee/deoplete-jedi'
+        Plug 'lambdalisue/vim-pyenv'
 
         " Plug 'ervandew/supertab'
         if has('python') && v:version >= 704
@@ -107,7 +108,7 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'ntpeters/vim-better-whitespace'
 
         Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
-        Plug 'digitaltoad/vim-pug', { 'for' : ['jade'] }
+        Plug 'digitaltoad/vim-pug', { 'for' : ['jade', 'pug'] }
         Plug 'ap/vim-css-color'
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
         Plug 'ap/vim-css-color'
@@ -121,7 +122,6 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
           Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
           let g:LatexBox_latexmk_preview_continuously=1 " Auto-compile TeX on save
           let g:LatexBox_build_dir='latexmk'            " Build files are in 'latexmk'
-          " let g:LatexBox_loaded_matchparen=0            " Disable LatexBox paren matching for performance
         endif
 
         Plug 'plasticboy/vim-markdown'
@@ -340,8 +340,10 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
     autocmd FileType haskell,rust setlocal nospell
 
     " LaTex editing performance tweaks
+    " au FileType tex setlocal nocursorline norelativenumber
     au FileType tex setlocal nocursorline
-    " au FileType tex :NoMatchParen
+    au FileType tex :NoMatchParen
+    let g:LatexBox_loaded_matchparen=0            " Disable LatexBox paren matching for performance
 " }
 
 " Key (re)Mappings {
