@@ -3,8 +3,8 @@
 " Neovim {
 
 " Neovim Python Provider {
-let g:python_host_prog="/home/fliang/.pyenv/versions/neovim2/bin/python"
-let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
+let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
+let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
 " }
 
 " }
@@ -161,6 +161,8 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
           Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
           let g:necoghc_enable_detailed_browse=1          " Show types of symbols
         endif
+        Plug 'vim-scripts/haskell.vim', { 'for': 'haskell' }
+        Plug 'vim-scripts/Cabal.vim', { 'for': 'cabal' }
 
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
@@ -519,17 +521,19 @@ endif
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
     if executable('rg')
+        set grepprg=rg\ --vimgrep
+
         let g:rg_command = '
         \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
         \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
         \ -g "!{.git,node_modules,vendor}/*" '
 
+        " NOTE: experimental, doesn't work well for large files
         command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-        set grepprg=rg\ --vimgrep
+        " nnoremap <c-l> :Rg<cr>
     endif
     nnoremap <c-p> :Files<cr>
     nnoremap <c-l> :Ag<cr>
-    " nnoremap <c-l> :Rg<cr>
 
     " Mapping selecting mappings
     nmap <leader><tab> <plug>(fzf-maps-n)
