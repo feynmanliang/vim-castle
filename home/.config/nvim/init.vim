@@ -52,44 +52,30 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'tpope/vim-fugitive'
         Plug 'mhinz/vim-signify'
         Plug 'mbbill/undotree'
-        Plug 'luochen1990/rainbow'
+        Plug 'jeetsukumaran/vim-buffergator'
 
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
         Plug 'scrooloose/nerdtree'
         Plug 'Xuyuanp/nerdtree-git-plugin'
 
-        Plug 'tpope/vim-dispatch'
-
         Plug 'neomake/neomake'
 
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-        Plug 'carlitux/deoplete-ternjs'
         Plug 'zchee/deoplete-clang'
+        Plug 'Shougo/neco-syntax'
         Plug 'zchee/deoplete-jedi'
         Plug 'lambdalisue/vim-pyenv'
-
-        " Plug 'ervandew/supertab'
-        if has('python') && v:version >= 704
-            Plug 'SirVer/ultisnips', { 'on': [] } | Plug 'honza/vim-snippets'
-        endif
-
-        " Automatic completion of parenthesis, brackets, etc.
-        Plug 'Raimondi/delimitMate'
-        let g:delimitMate_expand_cr=1                 " Put new brace on newline after CR
-
-        " On save, create directories if they don't exist
-        Plug 'dockyard/vim-easydir'
+        Plug 'carlitux/deoplete-ternjs'
+        Plug 'ternjs/tern_for_vim', { 'do': 'npm install'}
+        Plug 'othree/tern_for_vim_coffee'
+        Plug 'othree/jspc.vim'
 
         " On Arch Linux, the exuberant-ctags executable is named 'ctags'. Elsewhere, it
         " is 'ctags-exuberant'. On Macs, the ctags executable provided is NOT exuberant
         " ctags.
         if executable('ctags') && !OSX() || executable('ctags-exuberant')
-            set tags=~/.vimtags
-            Plug 'xolox/vim-easytags' | Plug 'xolox/vim-misc'
-            if !WINDOWS()
-                let g:easytags_async=1
-            endif
+            Plug 'ludovicchabant/vim-gutentags'
         endif
 
         " Class outline viewer
@@ -98,6 +84,19 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
             nnoremap <leader>tb :TagbarToggle<cr>
         endif
 
+
+        " Plug 'ervandew/supertab'
+        if has('python') && v:version >= 704
+            Plug 'SirVer/ultisnips', { 'on': [] } | Plug 'honza/vim-snippets'
+        endif
+
+        Plug 'luochen1990/rainbow'
+
+        " Automatic completion of parenthesis, brackets, etc.
+        Plug 'Raimondi/delimitMate'
+        let g:delimitMate_expand_cr=1                 " Put new brace on newline after CR
+
+        Plug 'dockyard/vim-easydir' " On save, create directories if they don't exist
         Plug 'chrisbra/SudoEdit.vim'
         Plug 'tpope/vim-commentary' " bound to 'gcc' and 'gc' keys
         Plug 'tpope/vim-surround'
@@ -111,8 +110,6 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         Plug 'digitaltoad/vim-pug', { 'for' : ['jade', 'pug'] }
         Plug 'ap/vim-css-color'
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
-        Plug 'ap/vim-css-color'
-        Plug 'groenewege/vim-less', { 'for': 'less' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
         Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
@@ -144,27 +141,26 @@ let g:python3_host_prog="/home/fliang/.pyenv/versions/neovim3/bin/python"
         endif
 
         Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
-        Plug 'cespare/vim-toml', { 'for': 'toml' }
         Plug 'chrisbra/csv.vim', { 'for': 'csv' }
         Plug 'elzr/vim-json', { 'for': 'json' }
-        "
+
         "" Filetype plugin for Scala and SBT
-        " Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
-        " Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
-        "
-        " Plug 'racer-rust/vim-racer'
-        "
-        " Plug 'rust-lang/rust.vim'
-        " let g:rustfmt_autosave = 1
-        " let g:rustfmt_fail_silently = 1
+        Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
+        Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
+
+        Plug 'racer-rust/vim-racer'
+
+        Plug 'rust-lang/rust.vim'
+        let g:rustfmt_autosave = 1
+        let g:rustfmt_fail_silently = 1
 
         Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
         " " Haskell omnifunc
-        " if executable('ghc-mod')
-        "   Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-        "   let g:necoghc_enable_detailed_browse=1          " Show types of symbols
-        " endif
+        if executable('ghc-mod')
+          Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+          let g:necoghc_enable_detailed_browse=1          " Show types of symbols
+        endif
 
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
@@ -469,7 +465,7 @@ nnoremap <silent> <leader>q gwip
 " map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
 
 " Switch to buffer
-map <F2> :ls<CR>:b<Space>
+" map <F2> :ls<CR>:b<Space>
 
 " }
 
@@ -477,10 +473,10 @@ map <F2> :ls<CR>:b<Space>
 
 " OmniComplete {
 if has("autocmd") && exists("+omnifunc")
-autocmd Filetype *
-            \if &omnifunc == "" |
-            \setlocal omnifunc=syntaxcomplete#Complete |
-            \endif
+    autocmd Filetype *
+                \if &omnifunc == "" |
+                \setlocal omnifunc=syntaxcomplete#Complete |
+                \endif
 endif
 
 hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
@@ -496,119 +492,153 @@ inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
 
 " Automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menu,preview,longest
+set completeopt=longest,menuone,preview
 " }
 
 " NerdTree {
 if isdirectory(expand("~/.config/nvim/plugged/nerdtree/"))
-"map <C-e> <plug>NERDTreeTabsToggle<CR>
-map <leader>e :NERDTreeFind<CR>
-nmap <leader>n :NERDTreeToggle<CR>
+    "map <C-e> <plug>NERDTreeTabsToggle<CR>
+    map <leader>e :NERDTreeFind<CR>
+    nmap <leader>n :NERDTreeToggle<CR>
 
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=0
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
+    let NERDTreeShowBookmarks=1
+    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+    let NERDTreeChDirMode=0
+    let NERDTreeQuitOnOpen=0
+    let NERDTreeMouseMode=2
+    let NERDTreeShowHidden=1
+    let NERDTreeKeepTreeInNewTab=1
+    let g:nerdtree_tabs_open_on_gui_startup=0
 
-" close if NERDTree is only buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    " close if NERDTree is only buffer
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 endif
 " }
 
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git --ignore node_modules --ignore target --ignore dist --ignore build -g ""'
-nnoremap <c-p> :Files<cr>
-nnoremap <c-l> :Ag<cr>
+    if executable('rg')
+        let g:rg_command = '
+        \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+        \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+        \ -g "!{.git,node_modules,vendor}/*" '
 
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+        command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
+        set grepprg=rg\ --vimgrep
+    endif
+    nnoremap <c-p> :Files<cr>
+    nnoremap <c-l> :Ag<cr>
+    " nnoremap <c-l> :Rg<cr>
 
-" Insert mode completion
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
+    " Mapping selecting mappings
+    nmap <leader><tab> <plug>(fzf-maps-n)
+    xmap <leader><tab> <plug>(fzf-maps-x)
+    omap <leader><tab> <plug>(fzf-maps-o)
+
+    " Insert mode completion
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
 endif
 "}
 
 " better-whitespace {
 if isdirectory(expand("~/.config/nvim/plugged/vim-better-whitespace/"))
-nnoremap <leader>W :StripWhitespace<CR>
-let g:strip_whitespace_on_save = 1
+    nnoremap <leader>W :StripWhitespace<CR>
+    let g:strip_whitespace_on_save = 1
 endif
 " }
 
 " TagBar {
 if isdirectory(expand("~/.config/nvim/plugged/tagbar/"))
-nnoremap <silent> <leader>tt :TagbarToggle<CR>
+    nnoremap <silent> <leader>tt :TagbarToggle<CR>
 endif
 "}
 
 " Rainbow {
 if isdirectory(expand("~/.config/nvim/plugged/rainbow/"))
-let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+    let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 endif
 "}
 
 " Fugitive {
 if isdirectory(expand("~/.config/nvim/plugged/vim-fugitive/"))
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gr :Gread<CR>
-nnoremap <silent> <leader>gw :Gwrite<CR>
-nnoremap <silent> <leader>ge :Gedit<CR>
-" Mnemonic _i_nteractive
-nnoremap <silent> <leader>gi :Git add -p %<CR>
-nnoremap <silent> <leader>gg :SignifyToggle<CR>
+    nnoremap <silent> <leader>gs :Gstatus<CR>
+    nnoremap <silent> <leader>gd :Gdiff<CR>
+    nnoremap <silent> <leader>gc :Gcommit<CR>
+    nnoremap <silent> <leader>gb :Gblame<CR>
+    nnoremap <silent> <leader>gl :Glog<CR>
+    nnoremap <silent> <leader>gp :Git push<CR>
+    nnoremap <silent> <leader>gr :Gread<CR>
+    nnoremap <silent> <leader>gw :Gwrite<CR>
+    nnoremap <silent> <leader>ge :Gedit<CR>
+    " Mnemonic _i_nteractive
+    nnoremap <silent> <leader>gi :Git add -p %<CR>
+    nnoremap <silent> <leader>gg :SignifyToggle<CR>
 endif
 " }
 
 " deoplete.nvim {
+
 if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_ignore_case = 1
-    let g:deoplete#enable_smart_case = 1
-    let g:deoplete#enable_camel_case = 1
-    let deoplete#sources#jedi#show_docstring = 1
+    let g:deoplete#enable_refresh_always = 1
     call deoplete#custom#set('_', 'min_pattern_length', 1)
 
+	let g:deoplete#ignore_sources = {}
+	let g:deoplete#ignore_sources._ = ['buffer']
+
+    let g:deoplete#sources = {}
+    let g:deoplete#sources['coffeescript'] = ['ultisnips', 'syntax', 'ternjs']
+    let g:deoplete#sources['javascript'] = ['ultisnips', 'syntax', 'ternjs']
+
+    call deoplete#custom#set('ultisnips', 'rank', 1000)
+
+    " Python
+    let deoplete#sources#jedi#show_docstring = 1
+
+    " C
     let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
     let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 
+    " Javascript
+    let g:tern_request_timeout = 1
+    let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on autocomplete
+    " make tern_for_vim use same 'tern' as deoplete-ternjs
+    " NOTE: deoplete-ternjs requires 'tern' to be in PATH
+    let g:tern#command = ['tern']
+    let g:tern#arguments = ['--persistent']
+    let g:tern#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ 'vue',
+                \ 'coffee'
+                \ ]
 endif
 " }
 
 " ultisnips {
 if isdirectory(expand("~/.config/nvim/plugged/ultisnips/"))
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+    let g:UltiSnipsExpandTrigger = "<tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-" defer loading ultisnips until first entering insert mode
-augroup load_us
-    autocmd!
-    autocmd InsertEnter * call plug#load('ultisnips')
-                \| autocmd! load_us
-augroup END
+    " defer loading ultisnips until first entering insert mode
+    augroup load_us
+        autocmd!
+        autocmd InsertEnter * call plug#load('ultisnips')
+                    \| autocmd! load_us
+    augroup END
 endif
 " }
 
 " UndoTree {
 if isdirectory(expand("~/.config/nvim/plugged/undotree/"))
-nnoremap <Leader>u :UndotreeToggle<CR>
-" If undotree is opened, it is likely one wants to interact with it.
-let g:undotree_SetFocusWhenToggle=1
+    nnoremap <Leader>u :UndotreeToggle<CR>
+    " If undotree is opened, it is likely one wants to interact with it.
+    let g:undotree_SetFocusWhenToggle=1
 endif
 " }
 
@@ -679,14 +709,14 @@ let g:move_key_modifier = 'C'
 " GUI Settings {
 
 if has('gui_running')
-" GVIM- (here instead of .gvimrc)
-set guioptions-=T           " Remove the toolbar
-set lines=40                " 40 lines of text instead of 24
+    " GVIM- (here instead of .gvimrc)
+    set guioptions-=T           " Remove the toolbar
+    set lines=40                " 40 lines of text instead of 24
 else
-if &term == 'xterm' || &term == 'screen'
-    set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-endif
-"set term=builtin_ansi       " Make arrow and other keys work
+    if &term == 'xterm' || &term == 'screen'
+        set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+    endif
+    "set term=builtin_ansi       " Make arrow and other keys work
 endif
 
 " }
@@ -695,55 +725,55 @@ endif
 
 " Initialize directories {
 function! InitializeDirectories()
-let parent = $HOME
-let prefix = 'vim'
-let dir_list = {
-            \ 'backup': 'backupdir',
-            \ 'views': 'viewdir',
-            \ 'swap': 'directory' }
+    let parent = $HOME
+    let prefix = 'vim'
+    let dir_list = {
+                \ 'backup': 'backupdir',
+                \ 'views': 'viewdir',
+                \ 'swap': 'directory' }
 
-if has('persistent_undo')
-    let dir_list['undo'] = 'undodir'
-endif
+    if has('persistent_undo')
+        let dir_list['undo'] = 'undodir'
+    endif
 
-let common_dir = parent . '/.' . prefix
+    let common_dir = parent . '/.' . prefix
 
-for [dirname, settingname] in items(dir_list)
-    let directory = common_dir . dirname . '/'
-    if exists("*mkdir")
-        if !isdirectory(directory)
-            call mkdir(directory)
+    for [dirname, settingname] in items(dir_list)
+        let directory = common_dir . dirname . '/'
+        if exists("*mkdir")
+            if !isdirectory(directory)
+                call mkdir(directory)
+            endif
         endif
-    endif
-    if !isdirectory(directory)
-        echo "Warning: Unable to create backup directory: " . directory
-        echo "Try: mkdir -p " . directory
-    else
-        let directory = substitute(directory, " ", "\\\\ ", "g")
-        exec "set " . settingname . "=" . directory
-    endif
-endfor
+        if !isdirectory(directory)
+            echo "Warning: Unable to create backup directory: " . directory
+            echo "Try: mkdir -p " . directory
+        else
+            let directory = substitute(directory, " ", "\\\\ ", "g")
+            exec "set " . settingname . "=" . directory
+        endif
+    endfor
 endfunction
 call InitializeDirectories()
 " }
 
 " Shell command {
 function! s:RunShellCommand(cmdline)
-botright new
+    botright new
 
-setlocal buftype=nofile
-setlocal bufhidden=delete
-setlocal nobuflisted
-setlocal noswapfile
-setlocal nowrap
-setlocal filetype=shell
-setlocal syntax=shell
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    setlocal nobuflisted
+    setlocal noswapfile
+    setlocal nowrap
+    setlocal filetype=shell
+    setlocal syntax=shell
 
-call setline(1, a:cmdline)
-call setline(2, substitute(a:cmdline, '.', '=', 'g'))
-execute 'silent $read !' . escape(a:cmdline, '%#')
-setlocal nomodifiable
-1
+    call setline(1, a:cmdline)
+    call setline(2, substitute(a:cmdline, '.', '=', 'g'))
+    execute 'silent $read !' . escape(a:cmdline, '%#')
+    setlocal nomodifiable
+    1
 endfunction
 
 command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
