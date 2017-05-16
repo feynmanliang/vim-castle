@@ -7,6 +7,8 @@ let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
 let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
 " }
 
+" fix resizing in konsole, https://github.com/neovim/neovim/issues/6429
+set guicursor=
 " }
 
 " Environment {
@@ -147,6 +149,8 @@ let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
         "" Filetype plugin for Scala and SBT
         Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
         Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
+
+        Plug 'elixir-lang/vim-elixir'
 
         Plug 'racer-rust/vim-racer'
 
@@ -306,6 +310,8 @@ let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
     set scrolljump=5                " Lines to scroll when cursor leaves screen
     set scrolloff=3                 " Minimum lines to keep above and below cursor
     set foldenable                  " Auto fold code
+    set foldmethod=syntax
+    set foldlevelstart=20
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 " }
@@ -473,6 +479,11 @@ nnoremap <silent> <leader>q gwip
 
 " Plugins {
 
+" vim-javascript {
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+" }
+
 " OmniComplete {
 if has("autocmd") && exists("+omnifunc")
     autocmd Filetype *
@@ -520,20 +531,23 @@ endif
 
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
+    nnoremap <c-p> :Files<cr>
     if executable('rg')
+        " use rg for :grep
         set grepprg=rg\ --vimgrep
 
         let g:rg_command = '
         \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-        \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+        \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ex,exs}"
         \ -g "!{.git,node_modules,vendor}/*" '
 
         " NOTE: experimental, doesn't work well for large files
         command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-        " nnoremap <c-l> :Rg<cr>
+         nnoremap <c-m> :Rg<cr>
     endif
-    nnoremap <c-p> :Files<cr>
-    nnoremap <c-l> :Ag<cr>
+    if executable('ag')
+        nnoremap <c-l> :Ag<cr>
+    endif
 
     " Mapping selecting mappings
     nmap <leader><tab> <plug>(fzf-maps-n)
