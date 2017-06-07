@@ -26,9 +26,9 @@ set guicursor=
 
     " Basics {
         set nocompatible        " Must be first line
-        if !WINDOWS()
-            set shell=zsh\ -l
-        endif
+        " if !WINDOWS()
+        "     set shell=zsh\ -l
+        " endif
     " }
 
     " Windows Compatible {
@@ -63,6 +63,8 @@ set guicursor=
 
         Plug 'neomake/neomake'
 
+        Plug 'Shougo/vimproc.vim', {'do': 'make'}
+
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'zchee/deoplete-clang'
         Plug 'Shougo/neco-syntax'
@@ -76,9 +78,9 @@ set guicursor=
         " On Arch Linux, the exuberant-ctags executable is named 'ctags'. Elsewhere, it
         " is 'ctags-exuberant'. On Macs, the ctags executable provided is NOT exuberant
         " ctags.
-        if executable('ctags') && !OSX() || executable('ctags-exuberant')
-            Plug 'ludovicchabant/vim-gutentags'
-        endif
+        " if executable('ctags') && !OSX() || executable('ctags-exuberant')
+        "     Plug 'ludovicchabant/vim-gutentags'
+        " endif
 
         " Class outline viewer
         if has('patch-7.0.167')
@@ -162,8 +164,10 @@ set guicursor=
 
         " " Haskell omnifunc
         if executable('ghc-mod')
-          Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-          let g:necoghc_enable_detailed_browse=1          " Show types of symbols
+            Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+
+            Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+            let g:necoghc_enable_detailed_browse=1          " Show types of symbols
         endif
         Plug 'vim-scripts/haskell.vim', { 'for': 'haskell' }
         Plug 'vim-scripts/Cabal.vim', { 'for': 'cabal' }
@@ -532,19 +536,19 @@ endif
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
     nnoremap <c-p> :Files<cr>
-    if executable('rg')
-        " use rg for :grep
-        set grepprg=rg\ --vimgrep
+    " if executable('rg')
+    "     " use rg for :grep
+    "     set grepprg=rg\ --vimgrep
 
-        let g:rg_command = '
-        \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-        \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ex,exs}"
-        \ -g "!{.git,node_modules,vendor}/*" '
+    "     let g:rg_command = '
+    "     \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+    "     \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ex,exs}"
+    "     \ -g "!{.git,node_modules,vendor}/*" '
 
-        " NOTE: experimental, doesn't work well for large files
-        command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-         nnoremap <c-m> :Rg<cr>
-    endif
+    "     " NOTE: experimental, doesn't work well for large files
+    "     command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
+    "      nnoremap <c-m> :Rg<cr>
+    " endif
     if executable('ag')
         nnoremap <c-l> :Ag<cr>
     endif
