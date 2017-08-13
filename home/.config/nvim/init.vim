@@ -144,9 +144,10 @@ set guicursor=
                 \}
         endif
 
-        Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
         Plug 'chrisbra/csv.vim', { 'for': 'csv' }
         Plug 'elzr/vim-json', { 'for': 'json' }
+        Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
+        Plug 'cespare/vim-toml', { 'for': 'toml' }
 
         "" Filetype plugin for Scala and SBT
         Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
@@ -154,11 +155,14 @@ set guicursor=
 
         Plug 'elixir-lang/vim-elixir'
 
-        Plug 'racer-rust/vim-racer'
+        Plug 'JuliaEditorSupport/julia-vim'
+        Plug 'JuliaEditorSupport/deoplete-julia'
 
-        Plug 'rust-lang/rust.vim'
+        Plug 'rust-lang/rust.vim', { 'for': 'rust' }
         let g:rustfmt_autosave = 1
         let g:rustfmt_fail_silently = 1
+        Plug 'timonv/vim-cargo'
+        Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
         Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
@@ -476,6 +480,23 @@ nnoremap <silent> <leader>q gwip
 " Python ctags
 " map <F11> :!ctags -R -f ./tags . `python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`<CR>
 
+" Rust ctags
+autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
+autocmd BufWrite *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" <bar> redraw!
+ let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits,traits',
+        \'i:impls,trait implementations',
+    \]
+    \}
+
 " Switch to buffer
 " map <F2> :ls<CR>:b<Space>
 
@@ -536,21 +557,14 @@ endif
 " fzf {
 if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
     nnoremap <c-p> :Files<cr>
-    " if executable('rg')
-    "     " use rg for :grep
-    "     set grepprg=rg\ --vimgrep
-
-    "     let g:rg_command = '
-    "     \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-    "     \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,ex,exs}"
-    "     \ -g "!{.git,node_modules,vendor}/*" '
-
-    "     " NOTE: experimental, doesn't work well for large files
-    "     command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-    "      nnoremap <c-m> :Rg<cr>
-    " endif
+    if executable('rg')
+        " use rg for :grep
+        set grepprg=rg\ --vimgrep
+    endif
     if executable('ag')
-        nnoremap <c-l> :Ag<cr>
+        " Default options are --nogroup --column --color
+        let s:ag_options = ' --one-device --smart-case '
+        nnoremap <c-l> :exec 'Ag' expand('<cword>')<cr>
     endif
 
     " Mapping selecting mappings
@@ -562,6 +576,9 @@ if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
     imap <c-x><c-f> <plug>(fzf-complete-path)
     imap <c-x><c-j> <plug>(fzf-complete-file-ag)
     imap <c-x><c-l> <plug>(fzf-complete-line)
+
+    nnoremap <F2> :Ag<CR>
+    nnoremap <F3> :call fzf#vim#tags(expand('<cword>'))<CR>
 endif
 "}
 
