@@ -69,7 +69,6 @@ set guicursor=
         Plug 'zchee/deoplete-clang'
         Plug 'Shougo/neco-syntax'
         Plug 'zchee/deoplete-jedi'
-        Plug 'lambdalisue/vim-pyenv'
         Plug 'carlitux/deoplete-ternjs'
         Plug 'ternjs/tern_for_vim', { 'do': 'npm install'}
         Plug 'othree/tern_for_vim_coffee'
