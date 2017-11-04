@@ -69,6 +69,9 @@ set guicursor=
         Plug 'zchee/deoplete-clang'
         Plug 'Shougo/neco-syntax'
         Plug 'zchee/deoplete-jedi'
+        if executable('gocode')
+            Plug 'zchee/deoplete-go', { 'do': 'make'}
+        endif
         Plug 'carlitux/deoplete-ternjs'
         Plug 'ternjs/tern_for_vim', { 'do': 'npm install'}
         Plug 'othree/tern_for_vim_coffee'
@@ -654,6 +657,10 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
                 \ 'vue',
                 \ 'coffee'
                 \ ]
+
+    " Go
+    let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 endif
 " }
 
