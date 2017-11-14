@@ -149,7 +149,6 @@ set guicursor=
         Plug 'chrisbra/csv.vim', { 'for': 'csv' }
         Plug 'elzr/vim-json', { 'for': 'json' }
         Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
-        Plug 'cespare/vim-toml', { 'for': 'toml' }
 
         "" Filetype plugin for Scala and SBT
         Plug 'derekwyatt/vim-scala', { 'for': ['scala', 'sbt.scala'] }
