@@ -52,6 +52,7 @@ set guicursor=
     call plug#begin('~/.config/nvim/plugged')
     " Plugins {
         Plug 'tpope/vim-fugitive'
+        Plug 'tpope/vim-rhubarb'
         Plug 'mhinz/vim-signify'
         Plug 'mbbill/undotree'
         Plug 'jeetsukumaran/vim-buffergator'
