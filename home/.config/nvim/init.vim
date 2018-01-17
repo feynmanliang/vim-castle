@@ -1,14 +1,13 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 
 " Neovim {
+    " Neovim Python Provider {
+    let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
+    let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
+    " }
 
-" Neovim Python Provider {
-let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
-let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
-" }
-
-" fix resizing in konsole, https://github.com/neovim/neovim/issues/6429
-set guicursor=
+    " https://github.com/neovim/neovim/issues/6429
+    set guicursor=
 " }
 
 " Environment {
@@ -26,9 +25,6 @@ set guicursor=
 
     " Basics {
         set nocompatible        " Must be first line
-        " if !WINDOWS()
-        "     set shell=zsh\ -l
-        " endif
     " }
 
     " Windows Compatible {
@@ -55,15 +51,16 @@ set guicursor=
         Plug 'mhinz/vim-signify'
         Plug 'mbbill/undotree'
         Plug 'jeetsukumaran/vim-buffergator'
+        Plug 'wesQ3/vim-windowswap'
 
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
+
         Plug 'scrooloose/nerdtree'
         Plug 'Xuyuanp/nerdtree-git-plugin'
 
-        Plug 'neomake/neomake'
-
-        Plug 'Shougo/vimproc.vim', {'do': 'make'}
+        Plug 'w0rp/ale'
+        Plug 'terryma/vim-multiple-cursors'
 
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'zchee/deoplete-clang'
@@ -74,7 +71,6 @@ set guicursor=
         endif
         Plug 'carlitux/deoplete-ternjs'
         Plug 'ternjs/tern_for_vim', { 'do': 'npm install'}
-        Plug 'othree/tern_for_vim_coffee'
         Plug 'othree/jspc.vim'
 
         " On Arch Linux, the exuberant-ctags executable is named 'ctags'. Elsewhere, it
@@ -113,12 +109,12 @@ set guicursor=
         Plug 'ntpeters/vim-better-whitespace'
 
         Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
-        Plug 'digitaltoad/vim-pug', { 'for' : ['jade', 'pug'] }
         Plug 'ap/vim-css-color'
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
+        Plug 'cakebaker/scss-syntax.vim', { 'for': ['scss'] }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
-        Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+        Plug 'elmcast/elm-vim', { 'for': ['elm']}
 
         " LaTeX compilation commands and autocomplete
         if executable('latexmk')
@@ -155,17 +151,6 @@ set guicursor=
         Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 
         Plug 'elixir-lang/vim-elixir'
-
-        Plug 'JuliaEditorSupport/julia-vim'
-        Plug 'JuliaEditorSupport/deoplete-julia'
-
-        Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-        let g:rustfmt_autosave = 1
-        let g:rustfmt_fail_silently = 1
-        Plug 'timonv/vim-cargo'
-        Plug 'racer-rust/vim-racer', { 'for': 'rust' }
-
-        Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
         " " Haskell omnifunc
         if executable('ghc-mod')
@@ -337,7 +322,7 @@ set guicursor=
     set softtabstop=4 " Let backspace delete indent
     set nojoinspaces  " Prevents inserting two spaces after punctuation on a join (J)
     set splitright    " Puts new vsplit windows to the right of the current
-    set splitbelow    " Puts new split windows to the bottom of the current
+    " set splitbelow    " Puts new split windows to the bottom of the current
     set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
     " set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     "autocmd FileType go autocmd BufWritePre <buffer> Fmt
@@ -505,6 +490,28 @@ autocmd BufWrite *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expa
 
 " Plugins {
 
+" ALE {
+" Only run when writing file
+let g:ale_lint_on_text_changed = 'never'
+
+let g:ale_fixers = {
+            \ 'javascript': ['eslint'],
+            \ 'haskell': ['brittany'],
+            \}
+" }
+
+" vim-multiple-cursors {
+" Disable Deoplete when selecting multiple cursors starts
+function! Multiple_cursors_before()
+    let b:deoplete_disable_auto_complete = 1
+endfunction
+
+" Enable Deoplete when selecting multiple cursors ends
+function! Multiple_cursors_after()
+    let b:deoplete_disable_auto_complete = 0
+endfunction
+" }
+
 " vim-javascript {
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
@@ -631,7 +638,6 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
 	let g:deoplete#ignore_sources._ = ['buffer']
 
     let g:deoplete#sources = {}
-    let g:deoplete#sources['coffeescript'] = ['ultisnips', 'syntax', 'ternjs']
     let g:deoplete#sources['javascript'] = ['ultisnips', 'syntax', 'ternjs']
 
     call deoplete#custom#set('ultisnips', 'rank', 1000)
@@ -686,26 +692,6 @@ if isdirectory(expand("~/.config/nvim/plugged/undotree/"))
 endif
 " }
 
-" neomake {
-autocmd! BufWritePost,BufEnter * Neomake
-nmap <Leader><Space>o :lopen<CR>      " open location window
-nmap <Leader><Space>c :lclose<CR>     " close location window
-" nmap <Leader><Space>, :ll<CR>         " go to current error/warning
-" nmap <Leader><Space>n :lnext<CR>      " next error/warning
-" nmap <Leader><Space>p :lprev<CR>      " previous error/warning
-" }
-
-" Syntastic {
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 0 " no quickfix list
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" }
-
 " Signify {
 "" highlight signs in Sy
 highlight SignifySignAdd    cterm=bold ctermbg=none ctermfg=119
@@ -743,6 +729,9 @@ if isdirectory(expand("~/.config/nvim/plugged/vim-airline-themes/"))
         let g:airline_right_sep='‹' " Slightly fancier than '<'
     endif
 endif
+
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#windowswap#enabled = 1
 " }
 
 " vim-move {
