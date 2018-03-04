@@ -110,9 +110,9 @@
         Plug 'ntpeters/vim-better-whitespace'
 
         Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
-        Plug 'ap/vim-css-color'
-        Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss'] }
-        Plug 'cakebaker/scss-syntax.vim', { 'for': ['scss'] }
+        Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'stylus'] }
+        Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'stylus'] }
+        Plug 'wavded/vim-stylus', { 'for': 'stylus' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
         Plug 'elmcast/elm-vim', { 'for': ['elm']}
@@ -332,6 +332,7 @@
     " preceding line best in a plugin but here for now.
 
     autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+    autocmd BufNewFile,BufRead *.styl set filetype=stylus.css
 
     " Workaround vim-commentary for Haskell
     autocmd FileType haskell setlocal commentstring=--\ %s
