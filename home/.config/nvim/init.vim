@@ -648,8 +648,8 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let deoplete#sources#jedi#show_docstring = 1
 
     " C
-    let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
-    let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+    let g:deoplete#sources#clang#libclang_path = '/usr/local/Cellar/llvm/5.0.1/lib/libclang.dylib'
+    let g:deoplete#sources#clang#clang_header = '/usr/local/Cellar/llvm/5.0.1/lib/clang'
 
     " Javascript
     let g:tern_request_timeout = 1
