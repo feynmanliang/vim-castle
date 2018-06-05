@@ -634,7 +634,7 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_ignore_case = 1
     let g:deoplete#enable_refresh_always = 1
-    call deoplete#custom#set('_', 'min_pattern_length', 1)
+    call deoplete#custom#source('_', 'min_pattern_length', 1)
 
 	let g:deoplete#ignore_sources = {}
 	let g:deoplete#ignore_sources._ = ['buffer']
@@ -642,7 +642,7 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     let g:deoplete#sources = {}
     let g:deoplete#sources['javascript'] = ['ultisnips', 'syntax', 'ternjs']
 
-    call deoplete#custom#set('ultisnips', 'rank', 1000)
+    call deoplete#custom#source('ultisnips', 'rank', 1000)
 
     " Python
     let deoplete#sources#jedi#show_docstring = 1
