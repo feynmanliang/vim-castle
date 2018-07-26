@@ -6,6 +6,10 @@
     let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
     " }
 
+    " Neovim Node Provider {
+        let g:node_host_prog=$HOME."/.zplug/repos/asdf-vm/asdf/installs/nodejs/8.11.2/.npm/bin/neovim-node-host"
+    " }
+
     " https://github.com/neovim/neovim/issues/6429
     set guicursor=
 " }
@@ -112,10 +116,11 @@
         Plug 'othree/html5.vim', { 'for': ['html', 'jinja'] }
         Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'stylus'] }
         Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'stylus'] }
-        Plug 'wavded/vim-stylus', { 'for': 'stylus' }
         Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
         Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
-        Plug 'elmcast/elm-vim', { 'for': ['elm']}
+
+        Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+        Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
 
         " LaTeX compilation commands and autocomplete
         if executable('latexmk')
@@ -152,6 +157,10 @@
         Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 
         Plug 'elixir-lang/vim-elixir'
+
+        Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
+        Plug 'HerringtonDarkholme/yats.vim'
+        Plug 'jparise/vim-graphql'
 
         " " Haskell omnifunc
         if executable('ghc-mod')
@@ -229,6 +238,8 @@
 " Vim UI {
     set background=dark " Assume dark background
     colorscheme hybrid
+    let g:hybrid_custom_term_colors = 1
+    highlight DiffText ctermfg=255
     " Transparent terminal background
     highlight Normal ctermbg=none
     highlight NonText ctermbg=none
