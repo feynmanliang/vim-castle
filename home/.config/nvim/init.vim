@@ -71,6 +71,8 @@
         Plug 'zchee/deoplete-clang'
         Plug 'Shougo/neco-syntax'
         Plug 'zchee/deoplete-jedi'
+        Plug 'lambdalisue/vim-pyenv', { 'for': ['python', 'python3'] }
+
         if executable('gocode')
             Plug 'zchee/deoplete-go', { 'do': 'make'}
         endif
