@@ -7,7 +7,7 @@
     " }
 
     " Neovim Node Provider {
-        let g:node_host_prog=$HOME."/.zplug/repos/asdf-vm/asdf/installs/nodejs/8.11.5/.npm/bin/neovim-node-host"
+        let g:node_host_prog=$HOME."/.zplug/repos/asdf-vm/asdf/installs/nodejs/8.11.4/.npm/bin/neovim-node-host"
     " }
 
     " https://github.com/neovim/neovim/issues/6429
