@@ -7,7 +7,7 @@
     " }
 
     " Neovim Node Provider {
-        let g:node_host_prog=$HOME."/.zplug/repos/asdf-vm/asdf/installs/nodejs/8.11.2/.npm/bin/neovim-node-host"
+        let g:node_host_prog=$HOME."/.zplug/repos/asdf-vm/asdf/installs/nodejs/8.11.4/.npm/bin/neovim-node-host"
     " }
 
     " https://github.com/neovim/neovim/issues/6429
@@ -71,12 +71,12 @@
         Plug 'zchee/deoplete-clang'
         Plug 'Shougo/neco-syntax'
         Plug 'zchee/deoplete-jedi'
+        Plug 'fatih/vim-go'
         if executable('gocode')
             Plug 'zchee/deoplete-go', { 'do': 'make'}
         endif
         Plug 'carlitux/deoplete-ternjs'
         Plug 'ternjs/tern_for_vim', { 'do': 'npm install'}
-        Plug 'othree/jspc.vim'
 
         " On Arch Linux, the exuberant-ctags executable is named 'ctags'. Elsewhere, it
         " is 'ctags-exuberant'. On Macs, the ctags executable provided is NOT exuberant
@@ -141,6 +141,7 @@
 
           Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
           let g:markdown_composer_syntax_theme='hybrid'
+          let g:markdown_composer_autostart=0
         elseif executable('npm')
           Plug 'euclio/vim-instant-markdown', {
                 \ 'for': 'markdown',
@@ -158,8 +159,8 @@
 
         Plug 'elixir-lang/vim-elixir'
 
-        Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
         Plug 'HerringtonDarkholme/yats.vim'
+        Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
         Plug 'jparise/vim-graphql'
 
         " " Haskell omnifunc
@@ -366,13 +367,6 @@
 let mapleader = ','
 let maplocalleader = '_'
 
-" Easier moving in tabs and windows
-" The lines conflict with the default digraph mapping of <C-K>
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <C-L> <C-W>l<C-W>_
-map <C-H> <C-W>h<C-W>_
-
 " End/Start of line motion keys act relative to row/wrap width in the
 " presence of `:set wrap`, and relative to line for `:set nowrap`.
 " Default vim behaviour is to act relative to text line in both cases
@@ -510,6 +504,7 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_fixers = {
             \ 'javascript': ['eslint'],
             \ 'haskell': ['brittany'],
+            \ 'python': ['pylint', 'flake8'],
             \}
 " }
 
@@ -585,7 +580,8 @@ if isdirectory(expand("~/.config/nvim/plugged/fzf.vim/"))
     if executable('ag')
         " Default options are --nogroup --column --color
         let s:ag_options = ' --one-device --smart-case '
-        nnoremap <c-l> :exec 'Ag' expand('<cword>')<cr>
+        " 'trick' to get the remap to override
+        autocmd VimEnter * nnoremap <c-l> :exec 'Ag' expand('<cword>')<cr>
     endif
 
     " Mapping selecting mappings
@@ -642,6 +638,7 @@ endif
 " deoplete.nvim {
 
 if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
+    "let g:deoplete#num_processes = 1 "https://github.com/Shougo/deoplete.nvim/issues/635
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_ignore_case = 1
     let g:deoplete#enable_refresh_always = 1
@@ -679,6 +676,13 @@ if isdirectory(expand("~/.config/nvim/plugged/deoplete.nvim/"))
     " Go
     let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
     let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+
+    " Python with pipenv
+    let pipenv_venv_path = system('pipenv --venv')
+    if shell_error == 0
+        let venv_path = substitute(pipenv_venv_path, '\n', '', '')
+        let g:deoplete#sources#jedi#python_path = venv_path . '/bin/python'
+    endif
 endif
 " }
 
